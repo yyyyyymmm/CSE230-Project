@@ -4,6 +4,15 @@
 ### Introduction
 Rhythm Dash is an innovative rhythm game built with Haskell and the brick library.
 
+### Project Collaborators
+
+| Name             | GitHub Account         |
+|------------------|------------------------|
+| Yimeng Wang      | yyyyyymmm              |
+| Luyao Ma         | luyaomacs              |
+| Ruoyang Li       | koichi-domoto          |
+| Kerong Xiang     | chloe020624@gmail.com  |
+
 ### Gameplay
 As the background music plays, notes aligned with the rhythm will flow from the right towards the judgment points on the left. Players interact by pressing corresponding keys at the precise moment, striving for the highest score. The game incorporates special items, like the "Double" power-up, which doubles the score for a limited time. And the health-restoring items, which replenish the player's health bar. Additionally, players must maintain their health bar, which depletes upon hitting traps.
 
