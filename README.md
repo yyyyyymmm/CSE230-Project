@@ -41,3 +41,28 @@ As the background music plays, notes aligned with the rhythm will flow from the 
 - Testing: Perform unit testing for each component to ensure reliability and performance.
 - Extended Features: Implement further goals, refine features, and conduct comprehensive testing.
 - Finalization: Complete the project with thorough documentation and prepare for the final presentation and demonstration.
+
+## Updates
+
+### Architecture of Application
+
+- `Sound`: Engaging background music that accompanies the game-play experience.
+- `Graphics`: Dynamic notes appearing in sync with the rhythm.
+- `Interaction`: The player's score dynamically updates as they press corresponding keys on the keyboard.
+
+### Challenges and Solutions
+
+So far, we have set up the basic framework of the whole program. With the background music playing, notes that are synchronized with the rhythm flow from the right to the judgment point on the left. Players strive to achieve high scores by accurately pressing the corresponding keys at the right moment.
+
+Though the challenge is that we need to accelerate the pace of our progress, we still think we are able to achieve the basic functionality we envisioned earlier. In the upcoming time, we will continue working on completing the content of our project to achieve our goals.
+
+Next step, we need to :
+
+1. Showcase flowing notes that are synchronized with the rhythm.
+2. Develop a user interface with multiple keys for hitting notes, acquiring items, and avoiding traps.
+3. Implement a real-time scoring system that provides immediate feedback.
+4. Display final scores and other performance metrics on the results page.
+
+### Do we expect to meet our goals until the deadline?
+
+- Yes
