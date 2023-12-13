@@ -27,7 +27,6 @@ library
   exposed-modules:
       GameUI
       GameUtils
-      Lib
       MusicUI
       StartUI
   other-modules:
@@ -42,6 +41,7 @@ library
     , brick
     , directory
     , filepath
+    , lens
     , vty
   default-language: Haskell2010
 
@@ -59,6 +59,7 @@ executable rhythmdash-exe
     , brick
     , directory
     , filepath
+    , lens
     , rhythmdash
     , vty
   default-language: Haskell2010
@@ -78,6 +79,7 @@ test-suite rhythmdash-test
     , brick
     , directory
     , filepath
+    , lens
     , rhythmdash
     , vty
   default-language: Haskell2010

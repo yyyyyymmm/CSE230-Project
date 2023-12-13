@@ -30,6 +30,7 @@ import Brick
   , on
   , customMain
   , neverShowCursor
+  , padAll
   )
 import Brick.BChan
 import qualified Brick.Widgets.Border as B
@@ -62,6 +63,21 @@ startGame = do
 
 appEvent :: Game -> BrickEvent () Tick -> EventM () (Next Game)
 appEvent g (AppEvent Tick) = update g
+appEvent g (VtyEvent (V.EvKey key [])) = keyPress key g
+appEvent g _ = continue g
+
+keyPress :: V.Key -> Game -> EventM () (Next Game)
+keyPress key g = case key of
+  V.KChar 's' -> continue $ hit KeyS g
+  V.KChar 'S' -> continue $ hit KeyS g
+  V.KChar 'j' -> continue $ hit KeyJ g
+  V.KChar 'J' -> continue $ hit KeyJ g
+  V.KChar 'q' -> quit g
+  V.KChar 'Q' -> quit g
+  _ -> continue $ g
+
+quit :: Game -> EventM () (Next Game)
+quit g = halt g
 
 theMap :: AttrMap
 theMap = attrMap V.defAttr
@@ -91,7 +107,7 @@ drawUI g =
   if (_end g) then 
     [C.vCenter $ C.hCenter $ drawGameOver g] 
   else (
-    [ C.vCenter $ C.hCenter $ drawNotes g]
+    [ C.vCenter $ hBox $ [vBox $ [drawScore (_score g), padAll 1 (str " "), drawHit (_hit g)], padAll 1 (str " "), drawNotes g]]
   )
 
 drawNotes :: Game -> Widget ()
@@ -109,7 +125,20 @@ drawNotes g = withBorderStyle BS.unicodeBold
 
 drawGameOver :: Game -> Widget ()
 drawGameOver g = withBorderStyle BS.unicodeBold
-  $ hLimit 100
   $ B.borderWithLabel (str " Game over ")
-  $ vBox $ [C.hCenter $ str ("Game Over")
-  ]
+  $ hLimit 100
+  $ vBox $ [C.hCenter $ str $ "Game Over"]
+
+drawScore :: Int -> Widget ()
+drawScore s = withBorderStyle BS.unicodeBold 
+  $ B.borderWithLabel (str " Score ")
+  $ hLimit 15
+  $ vLimit 15
+  $ vBox $ [C.hCenter $ str $ show s]
+
+drawHit :: HitState -> Widget ()
+drawHit s = withBorderStyle BS.unicodeBold
+  $ B.borderWithLabel (str " Hit ")
+  $ hLimit 15
+  $ vLimit 15
+  $ vBox $ [C.hCenter $ str $ show $ s]
