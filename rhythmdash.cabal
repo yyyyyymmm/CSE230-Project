@@ -28,6 +28,8 @@ library
       GameUI
       GameUtils
       Lib
+      MusicUI
+      StartUI
   other-modules:
       Paths_rhythmdash
   autogen-modules:
