@@ -4,8 +4,12 @@ import System.Directory
 import System.FilePath ((</>))
 import System.FilePath.Windows (FilePath)
 import System.IO
-import Control.Monad.IO.Class (liftIO)
+import System.Process
+import System.Posix.Signals
+import Control.Concurrent
+import Control.Monad.IO.Class
 import Control.Lens
+import Control.Concurrent
 import Brick
   ( App(..)
   , BrickEvent(..)
@@ -36,6 +40,7 @@ data Game = Game
   , _end :: Bool
   , _hit :: HitState
   , _score :: Int
+  , _music :: ProcessHandle
   } 
 
 data HitState = Perfect | Good | Miss | InitState
@@ -59,12 +64,27 @@ move = map (filter (>0) . map (\x -> x - 1))
 initG :: IO Game
 initG = do
     notes <- getNotes ("./notes" </> "song.txt")
+    music <- playMusic ("./music" </> "song.mp3")
     pure $
       Game { _notes = notes
         , _end = False
         , _hit = InitState
         , _score = 0
+        , _music = music
         }
+
+playMusic :: FilePath -> IO ProcessHandle
+playMusic filePath = do
+    let command = "afplay"
+        args = [filePath]
+    (_, _, _, processHandle) <- createProcess (proc command args)
+    return processHandle
+
+stopMusic :: ProcessHandle -> IO ()
+stopMusic processHandle = do
+    terminateProcess processHandle
+    _ <- waitForProcess processHandle
+    return ()
 
 update :: Game -> EventM () (Next Game)
 update g =
@@ -72,10 +92,11 @@ update g =
     continue g
   else do
     let nextG = Game
-                { _notes = move (_notes g)
-                , _end = isEnd (_notes g)
+                { _notes = move $ _notes g
+                , _end = isEnd $ _notes g
                 , _hit = if 1 `elem` concat (_notes g) then Miss else _hit g
                 , _score = _score g
+                , _music = _music g
                 } 
     continue nextG
 
@@ -105,4 +126,5 @@ hit k g =
                     , _end = _end g
                     , _hit = s
                     , _score = _score g + v
+                    , _music = _music g
                     }

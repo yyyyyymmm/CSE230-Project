@@ -7,6 +7,7 @@ import System.FilePath ((</>))
 import System.FilePath.Windows (FilePath)
 import System.IO
 import Control.Monad.IO.Class (liftIO)
+import Control.Concurrent (threadDelay)
 import Brick
   ( App(..)
   , BrickEvent(..)
@@ -77,7 +78,10 @@ keyPress key g = case key of
   _ -> continue $ g
 
 quit :: Game -> EventM () (Next Game)
-quit g = halt g
+quit g = do
+  liftIO $ stopMusic (_music g)
+  liftIO $ threadDelay 200000
+  halt g
 
 theMap :: AttrMap
 theMap = attrMap V.defAttr
