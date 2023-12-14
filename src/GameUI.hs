@@ -158,10 +158,10 @@ drawNotes g = withBorderStyle BS.unicodeBold
   where
     grid = [[drawGridAt x y | x <- [0..17]] | y <- [19, 18..0]]
     drawGridAt x y
-      | y >= 6 && y < 9 && x `elem` (_notes g) !! 0 = withAttr downAttr (str "     ")
-      | y >= 11 && y < 14 && x `elem` (_notes g) !! 1 = withAttr upAttr (str "     ")
-      | y >= 1 && y < 4 && x `elem` (_notes g)!!0     = withAttr propAttr (str " ♥♥♥ ")
-      | y >= 16 && y < 19 && x `elem` (_notes g)!!3     = withAttr propAttr (str " ♥♥♥ ")
+      | y >= 6 && y < 9 && x `elem` (_notes g) !! 1 = withAttr downAttr (str "     ")
+      | y >= 11 && y < 14 && x `elem` (_notes g) !! 2 = withAttr upAttr (str "     ")
+      | y >= 1 && y < 4 && x `elem` (_notes g)!! 0 = withAttr propAttr (str " ♥♥♥ ")
+      | y >= 16 && y < 19 && x `elem` (_notes g)!! 3= withAttr propAttr (str " ♥♥♥ ")
       | x == 0 && ((y >= 6 && y < 9) || (y >= 11 && y < 14)|| (y >= 1 && y < 4) || (y >= 16 && y < 19)) = withAttr vLineAttr (str "|")
       | x == 2 && ((y >= 6 && y < 9) || (y >= 11 && y < 14)|| (y >= 1 && y < 4) || (y >= 16 && y < 19)) = withAttr vLineAttr (str "|")
       | otherwise = withAttr emptyAttr (str "     ")

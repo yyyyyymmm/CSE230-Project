@@ -46,7 +46,7 @@ data Game = Game
   , _combo :: Int
   , _comboMax :: Int
   , _lineNumber :: Int
-  , _bestResult = [Int]
+  , _bestResult :: [Int]
   } 
 
 data Process = Hit | NoneHit
@@ -70,8 +70,7 @@ readchooseMusic path = do
 
 
 isEnd :: [[Int]] -> Bool
-isEnd [[], []] = True
-isEnd _ = False
+isEnd list = all null list
 
 move :: [[Int]] -> [[Int]]
 move = map (filter (>0) . map (\x -> x - 1))
@@ -157,7 +156,6 @@ update g =
   if (_end g) || ((_blood g) <= 0) then do
     liftIO $ stopMusic (_music g)
     liftIO $ writeBestResult (_score g, _combo g)
-
     continue g
   else do
     let hit = if 1 `elem` concat (_notes g) then Miss else _hit g
@@ -261,12 +259,6 @@ evaluateBonusTime t Hit _ _ = t
 evaluateBonusTime t _ _ _ 
   | t > 0  = t - 1 
   | otherwise = 0
-
-evaluateHit :: Int -> (HitState, Int)
-evaluateHit h
-  | h == 1      = (Perfect, 5)
-  | h > 5       = (Miss, 0)
-  | otherwise   = (Good, 3)
 
 evaluateCombo :: Int -> Process -> HitState -> Int
 evaluateCombo _ _ Miss = 0
