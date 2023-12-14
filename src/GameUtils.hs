@@ -40,6 +40,7 @@ data Game = Game
   , _bonusTime :: Int
   , _combo :: Int
   , _comboMax :: Int
+  , _lineNumber :: Int
   } 
 
 data Process = Hit | NoneHit
@@ -84,6 +85,7 @@ initGame = do
             , _bonusTime = 0
             , _combo = 0
             , _comboMax = 0
+            , _lineNumber = -1
             }
       2 -> do
         notes <- getNotes ("./notes" </> "song.txt")
@@ -96,6 +98,7 @@ initGame = do
             , _bonusTime = 0
             , _combo = 0
             , _comboMax = 0
+            , _lineNumber = -1
             }
       3 -> do
         notes <- getNotes ("./notes" </> "song.txt")
@@ -108,6 +111,7 @@ initGame = do
             , _bonusTime = 0
             , _combo = 0
             , _comboMax = 0
+            , _lineNumber = -1
             }
 
 update :: Game -> EventM () (Next Game)
@@ -125,6 +129,7 @@ update g =
                 , _bonusTime = evaluateBonusTime ( _bonusTime g) NoneHit KeyI Miss
                 , _combo = newCombo
                 , _comboMax = _comboMax g
+                , _lineNumber = _lineNumber g
                 } 
     continue newG
 
@@ -164,6 +169,7 @@ hit k g =
                     , _bonusTime = evaluateBonusTime ( _bonusTime g) Hit KeyW s
                     , _combo = newCombo
                     , _comboMax = max newCombo (_comboMax g)
+                    , _lineNumber = i
                     }
 
 -- hitTool function
@@ -188,6 +194,7 @@ hitTool k g =
                     , _bonusTime = evaluateBonusTime (_bonusTime g) Hit KeyI s
                     , _combo = newCombo
                     , _comboMax   = max newCombo (_comboMax g)
+                    , _lineNumber = i
                     }
 
 -- Util Function
