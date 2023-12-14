@@ -159,7 +159,8 @@ update g =
     continue g
   else do
     let hit = if 1 `elem` concat (_notes g) then Miss else _hit g
-    let newBlood = evaluateBlood (_blood g) NoneHit KeyS hit
+    let stateBlood = if 1 `elem` concat (_notes g) then Miss else Good
+    let newBlood = evaluateBlood (_blood g) NoneHit KeyS stateBlood
     let newCombo = evaluateCombo (_combo g) NoneHit hit
     let newG = Game
                 { _notes = move $ _notes g
@@ -253,8 +254,8 @@ evaluateBlood blood NoneHit _ Miss  = blood - 1
 evaluateBlood blood _ _ _ = blood
 
 evaluateBonusTime:: Int -> Process -> Key -> HitState -> Int
-evaluateBonusTime t Hit KeyI Good = 30
-evaluateBonusTime t Hit KeyW Good = 30
+evaluateBonusTime t Hit KeyI Good = 10
+evaluateBonusTime t Hit KeyW Good = 10
 evaluateBonusTime t Hit _ _ = t
 evaluateBonusTime t _ _ _ 
   | t > 0  = t - 1 
