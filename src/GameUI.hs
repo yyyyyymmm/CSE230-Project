@@ -60,7 +60,7 @@ startGame :: IO ()
 startGame = do
   chan <- newBChan 10
   void $ forkIO $ forever $ writeBChan chan Tick >> threadDelay 100000
-  g <- initG
+  g <- initGame
   let builder = V.mkVty V.defaultConfig
   initialVty <- builder
   void $ customMain initialVty builder (Just chan) app g
