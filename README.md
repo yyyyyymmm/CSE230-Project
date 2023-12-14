@@ -66,20 +66,20 @@ Next step, we need to :
 
 - Yes
 
-### Game Logic Implementation
+## Game Logic Implementation
 
-#### Start Menu
+### Start Menu
 
 The implementation of start menu is in [StartUI.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/StartUI.hs).
 
 ![startmenu](./img/startmenu.png)
 
-#### Choose Music
+### Choose Music
 
 The implementation of choosing music is in [MusicUI.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/MusicUI.hs).
 ![startmenu](./img/choosemusic.png)
 
-#### Game Playing
+### Game Playing
 
 The main part of the game UI is in [GameUI.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/GameUI.hs), underlying game logit is in [GameUtils.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/GameUtils.hs).
 

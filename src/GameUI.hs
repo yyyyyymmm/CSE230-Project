@@ -178,7 +178,7 @@ drawGameOver g = withBorderStyle BS.unicodeBold
   $ vBox $ [withAttr scoreAttr $ C.hCenter $ str ("     Final score: "++ (show $ _score g))
   , withAttr comboAttr $ C.hCenter $ str ("     Maximum combo: "++ (show $ _comboMax g))
   , withAttr scoreAttr $ C.hCenter $ str ("     History best score: "++ (show $ ((_bestResult g)!!0)))
-  , withAttr comboAttr $ C.hCenter $ str ("     History best combo: "++ (show $ ((_bestResult g)!!0)))
+  , withAttr comboAttr $ C.hCenter $ str ("     History best combo: "++ (show $ ((_bestResult g)!!1)))
   , withAttr quitAttr $ C.hCenter $ str ("     Press Q to go back to main page or press R to restrart.     ")
   ]
 
