@@ -90,6 +90,8 @@ theMap = attrMap V.defAttr
   , (vLineAttr, V.brightCyan `on` V.black)
   , (hLineAttr, V.brightCyan `on` V.black)
   , (bonusTimeAttr, fg V.red `V.withStyle` V.bold)
+  , (scoreAttr, V.white `on` V.rgbColor 150 80 75)
+  , (quitAttr, V.white `on` V.rgbColor 217 209 155)
   ]
 
 emptyAttr :: AttrName
@@ -138,9 +140,11 @@ drawNotes g = withBorderStyle BS.unicodeBold
 
 drawGameOver :: Game -> Widget ()
 drawGameOver g = withBorderStyle BS.unicodeBold
-  $ B.borderWithLabel (str " Game over ")
   $ hLimit 100
-  $ vBox $ [C.hCenter $ str $ "Game Over"]
+  $ B.borderWithLabel (str " Game over ")
+  $ vBox $ [withAttr scoreAttr $ C.hCenter $ str ("     Final score: "++ (show $ (_score g)))
+  , withAttr quitAttr $ C.hCenter $ str ("     Press Q to go back to main page or press R to restrart.     ")
+  ]
 
 drawGuide :: Widget ()
 drawGuide = withBorderStyle BS.unicodeBold
@@ -183,3 +187,9 @@ drawBonusTime t = withBorderStyle BS.unicodeBold
       withAttr bonusTimeAttr $ str $ show $ t
   else
       str $ show $ t
+
+scoreAttr :: AttrName
+scoreAttr = attrName "score"
+
+quitAttr :: AttrName
+quitAttr = attrName "quit"
