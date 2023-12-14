@@ -54,6 +54,12 @@ getNotes path = do
   notes <- readFile path 
   return $ read notes
 
+readchooseMusic :: FilePath -> IO Int
+readchooseMusic path = do
+  musicInt <- readFile path 
+  return $ read musicInt
+
+
 isEnd :: [[Int]] -> Bool
 isEnd [[], []] = True
 isEnd _ = False
