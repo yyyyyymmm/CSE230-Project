@@ -22,7 +22,7 @@ instance Arbitrary Key where
 newtype BonusTime = BonusTime Int deriving Show
 
 instance Arbitrary BonusTime where
-    arbitrary = BonusTime <$> choose (0, 30)
+    arbitrary = BonusTime <$> choose (0, 10)
 
 
 prop_evaluateBlood:: Int -> Process -> Key -> HitState -> Bool
@@ -36,7 +36,7 @@ prop_evaluateBlood blood e k s
 
 prop_BonusTime :: BonusTime -> Process -> Key -> HitState -> Bool
 prop_BonusTime (BonusTime t) e k s
-  | newT == 30 = e == Hit && (k == KeyI || k == KeyW) && s == Good || ( t == 30 && e == Hit)
+  | newT == 10 = e == Hit && (k == KeyI || k == KeyW) && s == Good || ( t == 10 && e == Hit)
   | newT == t - 1 = t > 0 
   | otherwise = newT == t && e == Hit || t == 0 
   where

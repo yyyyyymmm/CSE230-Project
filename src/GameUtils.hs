@@ -254,8 +254,8 @@ evaluateBlood blood NoneHit _ Miss  = blood - 1
 evaluateBlood blood _ _ _ = blood
 
 evaluateBonusTime:: Int -> Process -> Key -> HitState -> Int
-evaluateBonusTime t Hit KeyI Good = 30
-evaluateBonusTime t Hit KeyW Good = 30
+evaluateBonusTime t Hit KeyI Good = 10
+evaluateBonusTime t Hit KeyW Good = 10
 evaluateBonusTime t Hit _ _ = t
 evaluateBonusTime t _ _ _ 
   | t > 0  = t - 1 
