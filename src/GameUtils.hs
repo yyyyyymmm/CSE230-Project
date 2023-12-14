@@ -46,6 +46,7 @@ data Game = Game
   , _combo :: Int
   , _comboMax :: Int
   , _lineNumber :: Int
+  , _bestResult = [Int]
   } 
 
 data Process = Hit | NoneHit
@@ -80,8 +81,9 @@ initGame = do
     musicIn <- readchooseMusic ("./assets" </> "MusicChoice.txt")
     case musicIn of 
       1 -> do
-        notes <- getNotes ("./notes" </> "song.txt")
-        music <- playMusic("./music" </> "song.mp3")
+        notes <- getNotes ("./notes" </> "song1.txt")
+        music <- playMusic("./music" </> "song1.mp3")
+        results <- getBestResult 1
         pure $
           Game { _notes = notes
             , _end = False
@@ -93,10 +95,12 @@ initGame = do
             , _comboMax = 0
             , _lineNumber = -1
             , _music = music
+            , _bestResult = results
             }
       2 -> do
-        notes <- getNotes ("./notes" </> "song.txt")
-        music <- playMusic("./music" </> "song.mp3")
+        notes <- getNotes ("./notes" </> "song2.txt")
+        music <- playMusic("./music" </> "song2.mp3")
+        results <- getBestResult 2
         pure $
           Game { _notes = notes
             , _end = False
@@ -108,10 +112,12 @@ initGame = do
             , _comboMax = 0
             , _lineNumber = -1
             , _music = music
+            , _bestResult = results
             }
       3 -> do
-        notes <- getNotes ("./notes" </> "song.txt")
-        music <- playMusic ("./music" </> "song.mp3")
+        notes <- getNotes ("./notes" </> "song3.txt")
+        music <- playMusic ("./music" </> "song3.mp3")
+        results <- getBestResult 3
         pure $
           Game { _notes = notes
             , _end = False
@@ -123,6 +129,7 @@ initGame = do
             , _comboMax = 0
             , _lineNumber = -1
             , _music = music
+            , _bestResult = results
         }
 
 -- playMusic :: FilePath -> IO ProcessHandle
@@ -167,6 +174,7 @@ update g =
                 , _combo = newCombo
                 , _comboMax = _comboMax g
                 , _lineNumber = _lineNumber g
+                , _bestResult = _bestResult g
                 } 
     continue newG
 
@@ -208,6 +216,7 @@ hit k g =
                     , _comboMax = max newCombo (_comboMax g)
                     , _lineNumber = i
                     , _music = _music g
+                    , _bestResult = _bestResult g
                     }
 
 -- hitTool function
@@ -234,6 +243,7 @@ hitTool k g =
                     , _comboMax   = max newCombo (_comboMax g)
                     , _lineNumber = i
                     , _music = _music g
+                    , _bestResult = _bestResult g
                     }
 
 -- Util Function
