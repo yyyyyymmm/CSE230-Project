@@ -155,7 +155,7 @@ update :: Game -> EventM () (Next Game)
 update g =
   if (_end g) || ((_blood g) <= 0) then do
     liftIO $ stopMusic (_music g)
-    liftIO $ writeBestResult (_score g, _combo g)
+    liftIO $ writeBestResult (_score g, _comboMax g)
     continue g
   else do
     let hit = if 1 `elem` concat (_notes g) then Miss else _hit g
