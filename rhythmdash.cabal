@@ -43,6 +43,8 @@ library
     , directory
     , filepath
     , lens
+    , process
+    , unix
     , vty
   default-language: Haskell2010
 
@@ -62,7 +64,9 @@ executable rhythmdash-exe
     , directory
     , filepath
     , lens
+    , process
     , rhythmdash
+    , unix
     , vty
   default-language: Haskell2010
 
@@ -84,6 +88,8 @@ test-suite rhythmdash-test
     , directory
     , filepath
     , lens
+    , process
     , rhythmdash
+    , unix
     , vty
   default-language: Haskell2010
