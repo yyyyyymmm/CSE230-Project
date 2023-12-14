@@ -27,6 +27,8 @@ dependencies:
 - vty
 - lens
 - QuickCheck
+- process
+- unix
 
 ghc-options:
 - -Wall

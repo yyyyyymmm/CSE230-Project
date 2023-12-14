@@ -7,6 +7,7 @@ import System.FilePath ((</>))
 import System.FilePath.Windows (FilePath)
 import System.IO
 import Control.Monad.IO.Class (liftIO)
+import Control.Concurrent (threadDelay)
 import Brick
   ( App(..)
   , BrickEvent(..)
@@ -76,16 +77,19 @@ keyPress key g = case key of
   V.KChar 'S' -> continue $ hit KeyS g
   V.KChar 'j' -> continue $ hit KeyJ g
   V.KChar 'J' -> continue $ hit KeyJ g
-  V.KChar 'w' -> continue $ hit KeyW g
-  V.KChar 'W' -> continue $ hit KeyW g
-  V.KChar 'i' -> continue $ hit KeyI g
-  V.KChar 'I' -> continue $ hit KeyI g
+  V.KChar 'w' -> continue $ hitTool KeyW g
+  V.KChar 'W' -> continue $ hitTool KeyW g
+  V.KChar 'i' -> continue $ hitTool KeyI g
+  V.KChar 'I' -> continue $ hitTool KeyI g
   V.KChar 'q' -> quit g
   V.KChar 'Q' -> quit g
   _ -> continue $ g
 
 quit :: Game -> EventM () (Next Game)
-quit g = halt g
+quit g = do
+  liftIO $ stopMusic (_music g)
+  liftIO $ threadDelay 200000
+  halt g
 
 theMap :: AttrMap
 theMap = attrMap V.defAttr

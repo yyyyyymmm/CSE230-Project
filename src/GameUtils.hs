@@ -4,8 +4,12 @@ import System.Directory
 import System.FilePath ((</>))
 import System.FilePath.Windows (FilePath)
 import System.IO
-import Control.Monad.IO.Class (liftIO)
+import System.Process
+import System.Posix.Signals
+import Control.Concurrent
+import Control.Monad.IO.Class
 import Control.Lens
+import Control.Concurrent
 import Brick
   ( App(..)
   , BrickEvent(..)
@@ -36,6 +40,7 @@ data Game = Game
   , _end :: Bool
   , _hit :: HitState
   , _score :: Int
+  , _music :: ProcessHandle
   , _blood :: Int
   , _bonusTime :: Int
   , _combo :: Int
@@ -76,6 +81,7 @@ initGame = do
     case musicIn of 
       1 -> do
         notes <- getNotes ("./notes" </> "song.txt")
+        music <- playMusic("./music" </> "song.mp3")
         pure $
           Game { _notes = notes
             , _end = False
@@ -86,9 +92,11 @@ initGame = do
             , _combo = 0
             , _comboMax = 0
             , _lineNumber = -1
+            , _music = music
             }
       2 -> do
         notes <- getNotes ("./notes" </> "song.txt")
+        music <- playMusic("./music" </> "song.mp3")
         pure $
           Game { _notes = notes
             , _end = False
@@ -99,9 +107,11 @@ initGame = do
             , _combo = 0
             , _comboMax = 0
             , _lineNumber = -1
+            , _music = music
             }
       3 -> do
         notes <- getNotes ("./notes" </> "song.txt")
+        music <- playMusic ("./music" </> "song.mp3")
         pure $
           Game { _notes = notes
             , _end = False
@@ -112,7 +122,21 @@ initGame = do
             , _combo = 0
             , _comboMax = 0
             , _lineNumber = -1
-            }
+            , _music = music
+        }
+
+playMusic :: FilePath -> IO ProcessHandle
+playMusic filePath = do
+    let command = "afplay"
+        args = [filePath]
+    (_, _, _, processHandle) <- createProcess (proc command args)
+    return processHandle
+
+stopMusic :: ProcessHandle -> IO ()
+stopMusic processHandle = do
+    terminateProcess processHandle
+    _ <- waitForProcess processHandle
+    return ()
 
 update :: Game -> EventM () (Next Game)
 update g =
@@ -121,9 +145,10 @@ update g =
     let newBlood = evaluateBlood (_blood g) NoneHit KeyS hit
     let newCombo = evaluateCombo (_combo g) NoneHit hit
     let newG = Game
-                { _notes = move (_notes g)
-                , _end = isEnd (_notes g)
+                { _notes = move $ _notes g
+                , _end = isEnd $ _notes g
                 , _score = _score g
+                , _music = _music g
                 , _hit   = hit
                 , _blood = newBlood
                 , _bonusTime = evaluateBonusTime ( _bonusTime g) NoneHit KeyI Miss
@@ -170,6 +195,7 @@ hit k g =
                     , _combo = newCombo
                     , _comboMax = max newCombo (_comboMax g)
                     , _lineNumber = i
+                    , _music = _music g
                     }
 
 -- hitTool function
@@ -195,6 +221,7 @@ hitTool k g =
                     , _combo = newCombo
                     , _comboMax   = max newCombo (_comboMax g)
                     , _lineNumber = i
+                    , _music = _music g
                     }
 
 -- Util Function
