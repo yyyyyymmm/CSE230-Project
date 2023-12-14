@@ -136,7 +136,7 @@ eyeAttr :: AttrName
 eyeAttr = attrName "eye"
 drawUI :: Game -> [Widget ()]
 drawUI g =
-  if (_end g) then 
+  if (_end g) || ((_blood g) <= 0) then 
     [C.vCenter $ C.hCenter $ drawGameOver g] 
   else (
     [ C.vCenter $ hBox $ 

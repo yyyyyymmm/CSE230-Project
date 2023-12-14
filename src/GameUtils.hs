@@ -140,7 +140,12 @@ stopMusic processHandle = do
 
 update :: Game -> EventM () (Next Game)
 update g =
-  do
+  if (_end g) || ((_blood g) <= 0) then do
+    liftIO $ stopMusic (_music g)
+    liftIO $ writeBestResult (_score g, _combo g)
+
+    continue g
+  else do
     let hit = if 1 `elem` concat (_notes g) then Miss else _hit g
     let newBlood = evaluateBlood (_blood g) NoneHit KeyS hit
     let newCombo = evaluateCombo (_combo g) NoneHit hit
