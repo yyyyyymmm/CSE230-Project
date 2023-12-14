@@ -163,6 +163,8 @@ drawGameOver g = withBorderStyle BS.unicodeBold
   $ B.borderWithLabel (str " Game over ")
   $ vBox $ [withAttr scoreAttr $ C.hCenter $ str ("     Final score: "++ (show $ _score g))
   , withAttr comboAttr $ C.hCenter $ str ("     Maximum combo: "++ (show $ _comboMax g))
+  , withAttr scoreAttr $ C.hCenter $ str ("     History best score: "++ (show $ 0))
+  , withAttr comboAttr $ C.hCenter $ str ("     History best combo: "++ (show $ 0))
   , withAttr quitAttr $ C.hCenter $ str ("     Press Q to go back to main page or press R to restrart.     ")
   ]
 
