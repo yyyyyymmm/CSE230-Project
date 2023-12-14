@@ -102,11 +102,14 @@ theMap = attrMap V.defAttr
   , (quitAttr, V.white `on` V.rgbColor 217 209 155)
   , (comboAttr, V.white `on` V.rgbColor 128 137 122)
   , (eyeAttr, V.withForeColor V.defAttr V.brightCyan)
-  
+  , (propAttr, V.red `on` V.red)
   ]
 
+propAttr :: AttrName
+propAttr = attrName "prop"
+
 emptyAttr :: AttrName
-emptyAttr = attrName "emptyAttr"
+emptyAttr = attrName "empty"
 
 upAttr :: AttrName
 upAttr = attrName "upAttr"
@@ -157,9 +160,15 @@ drawNotes g = withBorderStyle BS.unicodeBold
     drawGridAt x y
       | y >= 6 && y < 9 && x `elem` (_notes g) !! 0 = withAttr downAttr (str "     ")
       | y >= 11 && y < 14 && x `elem` (_notes g) !! 1 = withAttr upAttr (str "     ")
-      | x == 0 && ((y >= 6 && y < 9) || (y >= 11 && y < 14)) = withAttr vLineAttr (str "|")
-      | x == 2 && ((y >= 6 && y < 9) || (y >= 11 && y < 14)) = withAttr vLineAttr (str "|")
+      | y >= 1 && y < 4 && x `elem` (_notes g)!!0     = withAttr propAttr (str " ♥♥♥ ")
+      | y >= 16 && y < 19 && x `elem` (_notes g)!!3     = withAttr propAttr (str " ♥♥♥ ")
+      | x == 0 && ((y >= 6 && y < 9) || (y >= 11 && y < 14)|| (y >= 1 && y < 4) || (y >= 16 && y < 19)) = withAttr vLineAttr (str "|")
+      | x == 2 && ((y >= 6 && y < 9) || (y >= 11 && y < 14)|| (y >= 1 && y < 4) || (y >= 16 && y < 19)) = withAttr vLineAttr (str "|")
       | otherwise = withAttr emptyAttr (str "     ")
+
+
+
+
 
 drawGameOver :: Game -> Widget ()
 drawGameOver g = withBorderStyle BS.unicodeBold
