@@ -77,6 +77,10 @@ keyPress key g = case key of
   V.KChar 'S' -> continue $ hit KeyS g
   V.KChar 'j' -> continue $ hit KeyJ g
   V.KChar 'J' -> continue $ hit KeyJ g
+  V.KChar 'w' -> continue $ hit KeyW g
+  V.KChar 'W' -> continue $ hit KeyW g
+  V.KChar 'i' -> continue $ hit KeyI g
+  V.KChar 'I' -> continue $ hit KeyI g
   V.KChar 'q' -> quit g
   V.KChar 'Q' -> quit g
   _ -> continue $ g
