@@ -14,19 +14,18 @@ Rhythm Dash is a rhythm game built with Haskell and the brick library.
 | Kerong Xiang     | chloe020624@gmail.com  |
 
 ### Gameplay
-As the background music plays, notes aligned with the rhythm will flow from the right towards the judgment points on the left. Players interact by pressing corresponding keys at the precise moment to get a high score. Additionally, Players must maintain their health bar, which depletes when hitting traps. The game incorporates special items, like the "Double" power-up, which doubles the score for a limited time. And the health-restoring items, which replenish the player's health bar. Players need to keep their health bar from emptying, or else they will lose the game.
+As the background music plays, notes aligned with the rhythm will flow from the right towards the judgment points on the left. Players interact by pressing corresponding keys at the precise moment to get a high score. Additionally, Players must maintain their blood level, which depletes when missing hitting. The game incorporates special items, like the "Double" power-up, which doubles the score for a limited time (we call it "bonus time"). And the blood-level-restoring items, which replenish the player's blood level. Players need to keep their blood level from emptying, or else they will lose the game.
 
 ### Core Features
-- Synced notes with background music for immersive gameplay.
-- Special in-game items to boost scores and replenish health bar.
-- Health bar system that requires players to avoid traps.
+- Synced notes with background music.
+- Special in-game items to boost scores and replenish blood level.
 - Real-time scoring that reflects the accuracy of player interactions.
 
 ### Goals
 - Display the start screen and game menus.
 - Load and play background music.
 - Display flowing notes that aligned with the rhythm.
-- Implement user interface with multiple keys for hitting notes, getting items and avoiding traps.
+- Implement user interface with multiple keys for hitting notes and getting special items.
 - Implement real-time scoring system with immediate feedback.
 - Show final scores and other performance metrics in the result page.
 
@@ -66,3 +65,22 @@ Next step, we need to :
 ### Do we expect to meet our goals until the deadline?
 
 - Yes
+
+### Game Logic Implementation
+
+#### Start Menu
+
+The implementation of start menu is in [StartUI.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/StartUI.hs).
+
+![startmenu](./img/startmenu.png)
+
+#### Choose Music
+
+The implementation of choosing music is in [MusicUI.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/MusicUI.hs).
+![startmenu](./img/choosemusic.png)
+
+#### Game Playing
+
+The main part of the game UI is in [GameUI.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/GameUI.hs), underlying game logit is in [GameUtils.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/GameUtils.hs).
+
+

@@ -36,6 +36,7 @@ import Brick
   , padBottom
   , Padding(..)
   , fg
+  , (<+>)
   )
 import Brick.BChan
 import qualified Brick.Widgets.Border as B
@@ -167,8 +168,6 @@ drawNotes g = withBorderStyle BS.unicodeBold
       | x == 0 && ((y >= 6 && y < 9) || (y >= 11 && y < 14)|| (y >= 1 && y < 4) || (y >= 16 && y < 19)) = withAttr vLineAttr (str "|")
       | x == 2 && ((y >= 6 && y < 9) || (y >= 11 && y < 14)|| (y >= 1 && y < 4) || (y >= 16 && y < 19)) = withAttr vLineAttr (str "|")
       | otherwise = withAttr emptyAttr (str "     ")
-
-
 
 
 
