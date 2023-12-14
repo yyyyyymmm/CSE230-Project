@@ -31,6 +31,10 @@ import Brick
   , customMain
   , neverShowCursor
   , padAll
+  , padTop
+  , padBottom
+  , Padding(..)
+  , fg
   )
 import Brick.BChan
 import qualified Brick.Widgets.Border as B
@@ -85,6 +89,7 @@ theMap = attrMap V.defAttr
   , (upAttr, V.white `on` V.rgbColor 128 137 122)
   , (vLineAttr, V.brightCyan `on` V.black)
   , (hLineAttr, V.brightCyan `on` V.black)
+  , (bonusTimeAttr, fg V.red `V.withStyle` V.bold)
   ]
 
 emptyAttr :: AttrName
@@ -102,12 +107,24 @@ vLineAttr = attrName "vLineAttr"
 hLineAttr :: AttrName
 hLineAttr = attrName "hLineAttr"
 
+bonusTimeAttr :: AttrName
+bonusTimeAttr = attrName "bonusTimeAttr"
+
 drawUI :: Game -> [Widget ()]
 drawUI g =
   if (_end g) then 
     [C.vCenter $ C.hCenter $ drawGameOver g] 
   else (
-    [ C.vCenter $ hBox $ [vBox $ [drawScore (_score g), padAll 1 (str " "), drawHit (_hit g)], padAll 1 (str " "), drawNotes g]]
+    [ C.vCenter $ hBox $ 
+      [vBox $ [
+          -- drawScore (_score g, _combo g, _blood g), padAll 1 (str " ")
+          drawScore (_score g, 0, 0), padAll 1 (str " ")
+        , drawHit (_hit g)], padAll 1 (str " ")
+        , drawNotes g
+        , drawGuide
+        , drawBonusTime 0
+      ]
+    ]
   )
 
 drawNotes :: Game -> Widget ()
@@ -129,12 +146,27 @@ drawGameOver g = withBorderStyle BS.unicodeBold
   $ hLimit 100
   $ vBox $ [C.hCenter $ str $ "Game Over"]
 
-drawScore :: Int -> Widget ()
-drawScore s = withBorderStyle BS.unicodeBold 
-  $ B.borderWithLabel (str " Score ")
+drawGuide :: Widget ()
+drawGuide = withBorderStyle BS.unicodeBold
+  $ B.borderWithLabel (str " Guidance ")
+  $ hLimit 25
+  $ vLimit 30
+  $ padAll 1
+  $ vBox $ [C.hCenter $ str $ "Hit Upper Line   J", padTop (Pad 1) (str " ")
+          , C.hCenter $ str $ "Hit Lower Line   S", padTop (Pad 1) (str " ")
+          , C.hCenter $ str $ "Quit             Q"]
+
+
+drawScore :: (Int, Int, Int) -> Widget ()
+drawScore (score, combo, blood) = withBorderStyle BS.unicodeBold 
+  $ B.borderWithLabel (str " ScoreBoard ")
   $ hLimit 15
-  $ vLimit 15
-  $ vBox $ [C.hCenter $ str $ show s]
+  $ vLimit 30
+  $ padAll 1
+  $ vBox $ [C.hCenter $ str $ ("Score : " ++ show score), padTop (Pad 1) (str " ")
+          , C.hCenter $ str $ ("Combo : " ++ show combo), padTop (Pad 1) (str " ")
+          , C.hCenter $ str $ ("Blood : " ++ show blood)]
+  -- $ vBox $ [C.hCenter $ str $ show s]
 
 drawHit :: HitState -> Widget ()
 drawHit s = withBorderStyle BS.unicodeBold
@@ -142,3 +174,15 @@ drawHit s = withBorderStyle BS.unicodeBold
   $ hLimit 15
   $ vLimit 15
   $ vBox $ [C.hCenter $ str $ show $ s]
+
+drawBonusTime :: Int -> Widget ()
+drawBonusTime t = withBorderStyle BS.unicodeBold
+  $ B.borderWithLabel (str " Bonus Time ")
+  $ C.hCenter
+  $ padAll 1
+  $ hLimit 15
+  $ vLimit 15
+  $ if t > 0 then
+      withAttr bonusTimeAttr $ str $ show $ t
+  else
+      str $ show $ t
