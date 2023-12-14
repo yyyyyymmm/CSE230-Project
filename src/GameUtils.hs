@@ -70,14 +70,38 @@ move = map (filter (>0) . map (\x -> x - 1))
 
 initG :: IO Game
 initG = do
-    notes <- getNotes ("./notes" </> "song.txt")
-    pure $
-      Game { _notes = notes
-        , _end = False
-        , _hit = InitState
-        , _score = 0
-
-        }
+    musicIn <- readchooseMusic ("./assets" </> "MusicChoice.txt")
+    case musicIn of 
+      1 -> do
+        notes <- getNotes ("./notes" </> "song.txt")
+        pure $
+          Game { _notes = notes
+            , _end = False
+            , _hit = InitState
+            , _score = 0
+            , _blood = 80
+            , _bonusTime = 0
+            }
+      2 -> do
+        notes <- getNotes ("./notes" </> "song.txt")
+        pure $
+          Game { _notes = notes
+            , _end = False
+            , _hit = InitState
+            , _score = 0
+            , _blood = 80
+            , _bonusTime = 0
+            }
+      3 -> do
+        notes <- getNotes ("./notes" </> "song.txt")
+        pure $
+          Game { _notes = notes
+            , _end = False
+            , _hit = InitState
+            , _score = 0
+            , _blood = 80
+            , _bonusTime = 0
+            }
 
 update :: Game -> EventM () (Next Game)
 update g =
