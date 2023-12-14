@@ -87,12 +87,14 @@ theMap :: AttrMap
 theMap = attrMap V.defAttr
   [ (downAttr, V.white `on` V.rgbColor 217 209 155)
   , (upAttr, V.white `on` V.rgbColor 128 137 122)
-  , (vLineAttr, V.brightCyan `on` V.black)
-  , (hLineAttr, V.brightCyan `on` V.black)
+  , (vLineAttr, V.withForeColor V.defAttr V.brightCyan )
+  , (hLineAttr, V.withForeColor V.defAttr V.brightCyan)
   , (bonusTimeAttr, fg V.red `V.withStyle` V.bold)
   , (scoreAttr, V.white `on` V.rgbColor 150 80 75)
   , (quitAttr, V.white `on` V.rgbColor 217 209 155)
   , (comboAttr, V.white `on` V.rgbColor 128 137 122)
+  , (eyeAttr, V.withForeColor V.defAttr V.brightCyan)
+  
   ]
 
 emptyAttr :: AttrName
@@ -113,6 +115,17 @@ hLineAttr = attrName "hLineAttr"
 bonusTimeAttr :: AttrName
 bonusTimeAttr = attrName "bonusTimeAttr"
 
+scoreAttr :: AttrName
+scoreAttr = attrName "score"
+
+quitAttr :: AttrName
+quitAttr = attrName "quit"
+
+comboAttr :: AttrName
+comboAttr = attrName "combo"
+
+eyeAttr :: AttrName
+eyeAttr = attrName "eye"
 drawUI :: Game -> [Widget ()]
 drawUI g =
   if (_end g) then 
@@ -120,6 +133,7 @@ drawUI g =
   else (
     [ C.vCenter $ hBox $ 
       [vBox $ [ drawScore (_score g, _combo g, _blood g), padAll 1 (str " "), drawHit (_hit g) ]
+        , drawBlock g
         , drawNotes g
         , vBox $ [drawGuide, padTop (Pad 1) $ drawBonusTime (_bonusTime g)]
       ]
@@ -190,11 +204,34 @@ drawBonusTime t = withBorderStyle BS.unicodeBold
   else
       str $ show $ t
 
-scoreAttr :: AttrName
-scoreAttr = attrName "score"
+drawBlock :: Game -> Widget ()
+drawBlock g = withBorderStyle BS.unicodeBold
+  $ B.borderWithLabel (str " Boxman ")
+  $ vBox rows
+  where
+    rows         = [hBox $ cellsInRow r | r <- [19, 18..0]]
+    cellsInRow y = [(drawCoord x y) | x <- [0..2]]
+    drawCoord x y 
+        | x == 0 && (y >= 1 && y < 4) && (_lineNumber g) == 0 = withAttr vLineAttr (str "|")
+        | x == 2 && (y >= 1 && y < 4) && (_lineNumber g) == 0 = withAttr vLineAttr (str "|")
+        | x == 0 && (y >= 6 && y < 9) && (_lineNumber g) == 1 = withAttr vLineAttr (str "|")
+        | x == 2 && (y >= 6 && y < 9) && (_lineNumber g) == 1 = withAttr vLineAttr (str "|")
+        | x == 0 && (y >= 11 && y < 14) && (_lineNumber g) == 2 = withAttr vLineAttr (str "|")
+        | x == 2 && (y >= 11 && y < 14) && (_lineNumber g) == 2 = withAttr vLineAttr (str "|")
+        | x == 0 && (y >= 16 && y < 19) && (_lineNumber g) == 3 = withAttr vLineAttr (str "|")
+        | x == 2 && (y >= 16 && y < 19) && (_lineNumber g) == 3 = withAttr vLineAttr (str "|")
+        | x == 1 && y == 1 && (_lineNumber g) == 0 = withAttr hLineAttr (str "_____")
+        | (x == 0 || x == 1) && y == 4 && (_lineNumber g) == 0 = withAttr hLineAttr (str "_____")
+        | x == 1 && y == 6 && (_lineNumber g) == 1 = withAttr hLineAttr (str "_____")
+        | (x == 0 || x == 1) && y == 9 && (_lineNumber g) == 1 = withAttr hLineAttr (str "_____")
+        | x == 1 && y == 11 && (_lineNumber g) == 2 = withAttr hLineAttr (str "_____")
+        | (x == 0 || x == 1) && y == 14 && (_lineNumber g) == 2 = withAttr hLineAttr (str "_____")
+        | x == 1 && y == 16 && (_lineNumber g) == 3 = withAttr hLineAttr (str "_____")
+        | (x == 0 || x == 1) && y == 19 && (_lineNumber g) == 3 = withAttr hLineAttr (str "_____")
+        | x == 1 && y == 2 && (_lineNumber g) == 0 = withAttr eyeAttr (str " OvO ")
+        | x == 1 && y == 7 && (_lineNumber g) == 1 = withAttr eyeAttr (str " OvO ")
+        | x == 1 && y == 12 && (_lineNumber g) == 2 = withAttr eyeAttr (str " OvO ")
+        | x == 1 && y == 17 && (_lineNumber g) == 3 = withAttr eyeAttr (str " OvO ")
+        | otherwise             = withAttr emptyAttr (str "     ")
 
-quitAttr :: AttrName
-quitAttr = attrName "quit"
 
-comboAttr :: AttrName
-comboAttr = attrName "combo"
