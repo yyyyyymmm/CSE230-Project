@@ -81,6 +81,8 @@ keyPress key g = case key of
   V.KChar 'W' -> continue $ hitTool KeyW g
   V.KChar 'i' -> continue $ hitTool KeyI g
   V.KChar 'I' -> continue $ hitTool KeyI g
+  V.KChar 'r' -> restartGame g
+  V.KChar 'R' -> restartGame g
   V.KChar 'q' -> quit g
   V.KChar 'Q' -> quit g
   _ -> continue $ g

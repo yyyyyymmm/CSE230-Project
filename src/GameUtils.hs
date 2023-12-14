@@ -301,3 +301,10 @@ getBestResult :: Int -> IO [Int]
 getBestResult musicChoice = do
     bestResult <- readBestResult
     return $ bestResult !! (musicChoice - 1)
+
+
+restartGame :: Game -> EventM () (Next Game)
+restartGame g = do
+  liftIO $ stopMusic (_music g)
+  newGame <- liftIO initGame
+  continue newGame
