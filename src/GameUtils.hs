@@ -49,6 +49,12 @@ getNotes path = do
   notes <- readFile path 
   return $ read notes
 
+readchooseMusic :: FilePath -> IO Int
+readchooseMusic path = do
+  musicInt <- readFile path 
+  return $ read musicInt
+
+
 isEnd :: [[Int]] -> Bool
 isEnd [[], []] = True
 isEnd _ = False
@@ -58,14 +64,32 @@ move = map (filter (>0) . map (\x -> x - 1))
 
 initG :: IO Game
 initG = do
-    notes <- getNotes ("./notes" </> "song.txt")
-    pure $
-      Game { _notes = notes
-        , _end = False
-        , _hit = InitState
-        , _score = 0
-        }
-
+    musicIn <- readchooseMusic ("./assets" </> "MusicChoice.txt")
+    case musicIn of 
+      1 -> do
+        notes <- getNotes ("./notes" </> "song.txt")
+        pure $
+          Game { _notes = notes
+            , _end = False
+            , _hit = InitState
+            , _score = 0
+            }
+      2 -> do
+        notes <- getNotes ("./notes" </> "song.txt")
+        pure $
+          Game { _notes = notes
+            , _end = False
+            , _hit = InitState
+            , _score = 0
+            }
+      3 -> do
+        notes <- getNotes ("./notes" </> "song.txt")
+        pure $
+          Game { _notes = notes
+            , _end = False
+            , _hit = InitState
+            , _score = 0
+            }
 update :: Game -> EventM () (Next Game)
 update g =
   if (_end g) then do
