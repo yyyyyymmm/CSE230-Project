@@ -1,7 +1,5 @@
 module MusicUI where
 
--- import ChooseMusicMode
-
 import System.Exit (exitSuccess)
 
 import Brick
@@ -33,8 +31,8 @@ import qualified Graphics.Vty as V
 
 titleAttr :: AttrName
 titleAttr = attrName "title"
-modeAttr :: AttrName
-modeAttr = attrName "mode"
+startAttr :: AttrName
+startAttr = attrName "start"
 musicAttr :: AttrName
 musicAttr = attrName "music"
 quitAttr :: AttrName
@@ -62,13 +60,13 @@ ui =
            , C.hCenter $ withBorderStyle myBorderStyle $ B.borderWithLabel (str " Choose Music ") $ hLimit 80
           --  , padTop (Pad 2) $ vBox
            $ vBox
-           [ withAttr modeAttr $ hBox [ C.hCenter $ padRight (Pad 4) $ str "Music 1"
+           [ withAttr startAttr $ hBox [ C.hCenter $ padRight (Pad 4) $ str "Music 1"
                   , C.hCenter $ str "Press <1>"
                   ]
            , withAttr musicAttr $ hBox [ C.hCenter $ padRight (Pad 4) $ str "Music 2"
                   , C.hCenter $ str "Press <2>"
                   ]
-           , withAttr modeAttr $ hBox [ C.hCenter $ padRight (Pad 4) $ str "Music 3"
+           , withAttr startAttr $ hBox [ C.hCenter $ padRight (Pad 4) $ str "Music 3"
                   , C.hCenter $ str "Press <3>"
                   ]
            , withAttr quitAttr $ hBox [ C.hCenter $ padRight (Pad 4) $ str "Quit"
@@ -80,7 +78,7 @@ ui =
 theMap :: AttrMap
 theMap = attrMap V.defAttr
     [ (titleAttr, V.white `on` V.blue)
-    , (modeAttr, V.white `on` V.rgbColor 150 80 75)
+    , (startAttr, V.white `on` V.rgbColor 150 80 75)
     , (musicAttr, V.white `on` V.rgbColor 128 137 122)
     , (quitAttr, V.white `on` V.rgbColor 217 209 155)
     ]

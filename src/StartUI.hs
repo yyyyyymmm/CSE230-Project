@@ -37,10 +37,8 @@ ui musicChoice =
     $ vBox [ C.hCenter $ withAttr titleAttr $ str "!! Rhythm Dash !!"
            , C.hCenter $ str "^o^"
            , C.hCenter $ withBorderStyle myBorderStyle $ B.borderWithLabel (str " Menu ") $ hLimit 80
-          --  , B.borderWithLabel (str " Menu ")
-          --  , padTop (Pad 2) $ vBox
            $ vBox
-           [ withAttr modeAttr $ hBox [ C.hCenter $ padRight (Pad 4) $ str "Game Mode"
+           [ withAttr startAttr $ hBox [ C.hCenter $ padRight (Pad 4) $ str "Start Game"
                   , C.hCenter $ str "Press <1>"
                   ]
            , withAttr musicAttr $ hBox [ C.hCenter $ padRight (Pad 4) $ str "Choose Music"
@@ -64,15 +62,15 @@ handleEvent _ _ = continue Nothing
 theMap :: AttrMap
 theMap = attrMap V.defAttr
     [ (titleAttr, V.white `on` V.blue)
-    , (modeAttr, V.white `on` V.rgbColor 150 80 75)
+    , (startAttr, V.white `on` V.rgbColor 150 80 75)
     , (quitAttr, V.white `on` V.rgbColor 217 209 155)
     , (musicAttr, V.white `on` V.rgbColor 128 137 122)
     ]
 
 titleAttr :: AttrName
 titleAttr = attrName "title"
-modeAttr :: AttrName
-modeAttr = attrName "mode"
+startAttr :: AttrName
+startAttr = attrName "start"
 quitAttr :: AttrName
 quitAttr = attrName "quit"
 musicAttr :: AttrName
