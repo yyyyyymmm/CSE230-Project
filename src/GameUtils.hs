@@ -81,6 +81,7 @@ initGame = do
     case musicIn of 
       1 -> do
         notes <- getNotes ("./notes" </> "song.txt")
+        music <- playMusic("./music" </> "song.mp3")
         pure $
           Game { _notes = notes
             , _end = False
@@ -91,9 +92,11 @@ initGame = do
             , _combo = 0
             , _comboMax = 0
             , _lineNumber = -1
+            , _music = music
             }
       2 -> do
         notes <- getNotes ("./notes" </> "song.txt")
+        music <- playMusic("./music" </> "song.mp3")
         pure $
           Game { _notes = notes
             , _end = False
@@ -104,11 +107,12 @@ initGame = do
             , _combo = 0
             , _comboMax = 0
             , _lineNumber = -1
+            , _music = music
             }
       3 -> do
         notes <- getNotes ("./notes" </> "song.txt")
         music <- playMusic ("./music" </> "song.mp3")
-    pure $
+        pure $
           Game { _notes = notes
             , _end = False
             , _hit = InitState
@@ -191,6 +195,7 @@ hit k g =
                     , _combo = newCombo
                     , _comboMax = max newCombo (_comboMax g)
                     , _lineNumber = i
+                    , _music = _music g
                     }
 
 -- hitTool function
@@ -216,6 +221,7 @@ hitTool k g =
                     , _combo = newCombo
                     , _comboMax   = max newCombo (_comboMax g)
                     , _lineNumber = i
+                    , _music = _music g
                     }
 
 -- Util Function
