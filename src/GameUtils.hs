@@ -36,12 +36,17 @@ data Game = Game
   , _end :: Bool
   , _hit :: HitState
   , _score :: Int
+  , _blood :: Int
+  , _bonusTime :: Int
   } 
+
+data Process = Hit | NoneHit
+    deriving (Show, Eq, Ord)
 
 data HitState = Perfect | Good | Miss | InitState
   deriving (Show, Eq, Ord)
 
-data Key = KeyS | KeyJ
+data Key = KeyS | KeyJ | KeyW | KeyI
     deriving (Show, Eq, Ord)
 
 getNotes :: FilePath -> IO [[Int]]
@@ -64,25 +69,30 @@ initG = do
         , _end = False
         , _hit = InitState
         , _score = 0
+
         }
 
 update :: Game -> EventM () (Next Game)
 update g =
-  if (_end g) then do
-    continue g
-  else do
-    let nextG = Game
+  do
+    let hit = if 1 `elem` concat (_notes g) then Miss else _hit g
+    let newBlood = evaluateBlood (_blood g) NoneHit KeyS hit
+    let newG = Game
                 { _notes = move (_notes g)
                 , _end = isEnd (_notes g)
-                , _hit = if 1 `elem` concat (_notes g) then Miss else _hit g
                 , _score = _score g
+                , _hit   = hit
+                , _blood = newBlood
+                , _bonusTime = evaluateBonusTime ( _bonusTime g) NoneHit KeyI Miss
                 } 
-    continue nextG
+    continue newG
 
-getIndex :: Key -> Int
-getIndex k = case k of
+getKeyIndex :: Key -> Int
+getKeyIndex k = case k of
   KeyS -> 0
   KeyJ -> 1
+  KeyW -> 2
+  KeyI -> 3
 
 getHitState :: Int -> HitState
 getHitState x
@@ -92,7 +102,7 @@ getHitState x
 
 hit :: Key -> Game -> Game
 hit k g =
-  let i = getIndex k
+  let i = getKeyIndex k
       n = _notes g
   in if null (n !! i)
        then g
@@ -101,8 +111,56 @@ hit k g =
                   Perfect -> 2
                   Good -> 1
                   Miss -> 0
+                newBlood = evaluateBlood (_blood g) Hit KeyS s
+                times = if _bonusTime g > 0 then 2 else 1
             in Game { _notes = if s == Miss then n else n & element i %~ tail
                     , _end = _end g
                     , _hit = s
                     , _score = _score g + v
+                    , _blood = newBlood
+                    , _bonusTime = evaluateBonusTime ( _bonusTime g) Hit KeyW s
                     }
+
+-- hitTool function
+hitTool :: Key -> Game -> Game
+hitTool k g = 
+  let i = getKeyIndex k
+      n = _notes g
+  in if null (n !! i)
+       then g
+      else let s = getHitState (head (n !! i))
+               v = case s of
+                  Perfect -> 2
+                  Good -> 1
+                  Miss -> 0
+               newBlood = evaluateBlood (_blood g) Hit KeyW s
+            in Game { _notes       = if s == Miss then n else move (n & element i .~ tail (n!!i))
+                    , _hit   = s
+                    , _end       = _end g
+                    , _score      = _score g 
+                    , _blood = newBlood
+                    , _bonusTime = evaluateBonusTime (_bonusTime g) Hit KeyI s
+                    }
+
+evaluateBlood :: Int -> Process -> Key -> HitState -> Int
+evaluateBlood blood Hit key state
+    | (key == KeyW || key == KeyI) && state == Perfect = blood + 2
+evaluateBlood blood NoneHit _ Miss  = blood - 1
+evaluateBlood blood _ _ _ = blood
+
+evaluateBonusTime:: Int -> Process -> Key -> HitState -> Int
+evaluateBonusTime t Hit KeyI Good = 30
+evaluateBonusTime t Hit KeyW Good = 30
+evaluateBonusTime t Hit _ _ = t
+evaluateBonusTime t _ _ _ 
+  | t > 0  = t - 1 
+  | otherwise = 0
+
+evaluateHit :: Int -> (HitState, Int)
+evaluateHit h
+  | h == 1      = (Perfect, 5)
+  | h > 5       = (Miss, 0)
+  | otherwise   = (Good, 3)
+
+
+
