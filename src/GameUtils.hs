@@ -80,8 +80,8 @@ initGame = do
     musicIn <- readchooseMusic ("./assets" </> "MusicChoice.txt")
     case musicIn of 
       1 -> do
-        notes <- getNotes ("./notes" </> "song.txt")
-        music <- playMusic("./music" </> "song.mp3")
+        notes <- getNotes ("./notes" </> "song1.txt")
+        music <- playMusic("./music" </> "song1.mp3")
         pure $
           Game { _notes = notes
             , _end = False
@@ -95,8 +95,8 @@ initGame = do
             , _music = music
             }
       2 -> do
-        notes <- getNotes ("./notes" </> "song.txt")
-        music <- playMusic("./music" </> "song.mp3")
+        notes <- getNotes ("./notes" </> "song2.txt")
+        music <- playMusic("./music" </> "song2.mp3")
         pure $
           Game { _notes = notes
             , _end = False
@@ -110,8 +110,8 @@ initGame = do
             , _music = music
             }
       3 -> do
-        notes <- getNotes ("./notes" </> "song.txt")
-        music <- playMusic ("./music" </> "song.mp3")
+        notes <- getNotes ("./notes" </> "song3.txt")
+        music <- playMusic ("./music" </> "song3.mp3")
         pure $
           Game { _notes = notes
             , _end = False
