@@ -116,13 +116,9 @@ drawUI g =
     [C.vCenter $ C.hCenter $ drawGameOver g] 
   else (
     [ C.vCenter $ hBox $ 
-      [vBox $ [
-          -- drawScore (_score g, _combo g, _blood g), padAll 1 (str " ")
-          drawScore (_score g, 0, 0), padAll 1 (str " ")
-        , drawHit (_hit g)], padAll 1 (str " ")
+      [vBox $ [ drawScore (_score g, 0, 0), padAll 1 (str " "), drawHit (_hit g) ]
         , drawNotes g
-        , drawGuide
-        , drawBonusTime 0
+        , vBox $ [drawGuide, padTop (Pad 1) $ drawBonusTime 0]
       ]
     ]
   )
@@ -173,15 +169,16 @@ drawHit s = withBorderStyle BS.unicodeBold
   $ B.borderWithLabel (str " Hit ")
   $ hLimit 15
   $ vLimit 15
+  $ padAll 1
   $ vBox $ [C.hCenter $ str $ show $ s]
 
 drawBonusTime :: Int -> Widget ()
 drawBonusTime t = withBorderStyle BS.unicodeBold
   $ B.borderWithLabel (str " Bonus Time ")
+  $ hLimit 25
+  $ vLimit 15
   $ C.hCenter
   $ padAll 1
-  $ hLimit 15
-  $ vLimit 15
   $ if t > 0 then
       withAttr bonusTimeAttr $ str $ show $ t
   else
