@@ -26,6 +26,7 @@ dependencies:
 - brick
 - vty
 - lens
+- QuickCheck
 - process
 - unix
 
