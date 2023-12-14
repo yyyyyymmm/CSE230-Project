@@ -125,10 +125,17 @@ initGame = do
             , _music = music
         }
 
+-- playMusic :: FilePath -> IO ProcessHandle
+-- playMusic filePath = do
+--     let command = "afplay"
+--         args = [filePath]
+--     (_, _, _, processHandle) <- createProcess (proc command args)
+--     return processHandle
+
 playMusic :: FilePath -> IO ProcessHandle
 playMusic filePath = do
-    let command = "afplay"
-        args = [filePath]
+    let command = "mpv"
+        args = [filePath, "--no-terminal"]
     (_, _, _, processHandle) <- createProcess (proc command args)
     return processHandle
 
@@ -142,8 +149,9 @@ update :: Game -> EventM () (Next Game)
 update g =
   if (_end g) || ((_blood g) <= 0) then do
     liftIO $ stopMusic (_music g)
-    liftIO $ threadDelay 200000
-    halt g
+    liftIO $ writeBestResult (_score g, _combo g)
+
+    continue g
   else do
     let hit = if 1 `elem` concat (_notes g) then Miss else _hit g
     let newBlood = evaluateBlood (_blood g) NoneHit KeyS hit
@@ -165,9 +173,9 @@ update g =
 
 getKeyIndex :: Key -> Int
 getKeyIndex k = case k of
-  KeyS -> 0
-  KeyJ -> 1
-  KeyW -> 2
+  KeyS -> 1
+  KeyJ -> 2
+  KeyW -> 0
   KeyI -> 3
 
 getHitState :: Int -> HitState
