@@ -224,3 +224,39 @@ evaluateCombo _ _ Miss = 0
 evaluateCombo combo NoneHit _    = combo
 evaluateCombo combo Hit  _    = combo+1
 
+writeBestResult :: (Int,Int) -> IO ()
+writeBestResult (score, combo) = do
+    currentResult <- readBestResult
+    musicChoice <- readchooseMusic ("./assets" </> "MusicChoice.txt")
+    let index = musicChoice - 1
+
+    if index < 0 || index >= length currentResult
+    then return ()
+    else do
+        let currentScoreCombo = currentResult !! index
+        if currentScoreCombo == [] then do
+            let results = replaceAtIndex index [score, combo] currentResult
+            writeFile "./assets/bestResult.txt" (show results)
+        else
+            if score > head currentScoreCombo then do
+                let results = replaceAtIndex index [score, combo] currentResult
+                writeFile "./assets/bestResult.txt" (show results)
+            else if score == head currentScoreCombo && combo > (currentScoreCombo !! 1) then do
+                let results = replaceAtIndex index [score, combo] currentResult
+                writeFile "./assets/bestResult.txt" (show results)
+            else return ()
+
+replaceAtIndex :: Int -> [Int] -> [[Int]] -> [[Int]]
+replaceAtIndex n newList list
+  | n < 0 || n >= length list = list  -- If index is out of bounds, return the original list
+  | otherwise = take n list ++ [newList] ++ drop (n + 1) list
+
+readBestResult :: IO [[Int]]
+readBestResult = do
+  resultStr <- readFile "./assets/bestResult.txt"
+  return $ read resultStr
+
+getBestResult :: Int -> IO [Int]
+getBestResult musicChoice = do
+    bestResult <- readBestResult
+    return $ bestResult !! (musicChoice - 1)
