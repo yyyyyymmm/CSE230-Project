@@ -38,6 +38,7 @@ data Game = Game
   , _score :: Int
   , _blood :: Int
   , _bonusTime :: Int
+  , _combo :: Int
   } 
 
 data Process = Hit | NoneHit
@@ -69,14 +70,38 @@ move = map (filter (>0) . map (\x -> x - 1))
 
 initG :: IO Game
 initG = do
-    notes <- getNotes ("./notes" </> "song.txt")
-    pure $
-      Game { _notes = notes
-        , _end = False
-        , _hit = InitState
-        , _score = 0
-
-        }
+    musicIn <- readchooseMusic ("./assets" </> "MusicChoice.txt")
+    case musicIn of 
+      1 -> do
+        notes <- getNotes ("./notes" </> "song.txt")
+        pure $
+          Game { _notes = notes
+            , _end = False
+            , _hit = InitState
+            , _score = 0
+            , _blood = 80
+            , _bonusTime = 0
+            }
+      2 -> do
+        notes <- getNotes ("./notes" </> "song.txt")
+        pure $
+          Game { _notes = notes
+            , _end = False
+            , _hit = InitState
+            , _score = 0
+            , _blood = 80
+            , _bonusTime = 0
+            }
+      3 -> do
+        notes <- getNotes ("./notes" </> "song.txt")
+        pure $
+          Game { _notes = notes
+            , _end = False
+            , _hit = InitState
+            , _score = 0
+            , _blood = 80
+            , _bonusTime = 0
+            }
 
 update :: Game -> EventM () (Next Game)
 update g =
@@ -118,6 +143,7 @@ hit k g =
                   Good -> 1
                   Miss -> 0
                 newBlood = evaluateBlood (_blood g) Hit KeyS s
+                newCombo = evaluateCombo (_combo g) Hit s
                 times = if _bonusTime g > 0 then 2 else 1
             in Game { _notes = if s == Miss then n else n & element i %~ tail
                     , _end = _end g
@@ -125,6 +151,7 @@ hit k g =
                     , _score = _score g + v
                     , _blood = newBlood
                     , _bonusTime = evaluateBonusTime ( _bonusTime g) Hit KeyW s
+                    , _combo = newCombo
                     }
 
 -- hitTool function
@@ -140,12 +167,14 @@ hitTool k g =
                   Good -> 1
                   Miss -> 0
                newBlood = evaluateBlood (_blood g) Hit KeyW s
+               newCombo = evaluateCombo (_combo g) Hit s
             in Game { _notes       = if s == Miss then n else move (n & element i .~ tail (n!!i))
                     , _hit   = s
                     , _end       = _end g
                     , _score      = _score g 
                     , _blood = newBlood
                     , _bonusTime = evaluateBonusTime (_bonusTime g) Hit KeyI s
+                    , _combo = newCombo
                     }
 
 evaluateBlood :: Int -> Process -> Key -> HitState -> Int
@@ -168,5 +197,8 @@ evaluateHit h
   | h > 5       = (Miss, 0)
   | otherwise   = (Good, 3)
 
-
+evaluateCombo :: Int -> Process -> HitState -> Int
+evaluateCombo _ _ Miss = 0
+evaluateCombo combo NoneHit _    = combo
+evaluateCombo combo Hit  _    = combo+1
 
