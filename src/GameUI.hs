@@ -92,6 +92,7 @@ theMap = attrMap V.defAttr
   , (bonusTimeAttr, fg V.red `V.withStyle` V.bold)
   , (scoreAttr, V.white `on` V.rgbColor 150 80 75)
   , (quitAttr, V.white `on` V.rgbColor 217 209 155)
+  , (comboAttr, V.white `on` V.rgbColor 128 137 122)
   ]
 
 emptyAttr :: AttrName
@@ -142,7 +143,8 @@ drawGameOver :: Game -> Widget ()
 drawGameOver g = withBorderStyle BS.unicodeBold
   $ hLimit 100
   $ B.borderWithLabel (str " Game over ")
-  $ vBox $ [withAttr scoreAttr $ C.hCenter $ str ("     Final score: "++ (show $ (_score g)))
+  $ vBox $ [withAttr scoreAttr $ C.hCenter $ str ("     Final score: "++ (show $ _score g))
+  , withAttr comboAttr $ C.hCenter $ str ("     Maximum combo: "++ (show $ _comboMax g))
   , withAttr quitAttr $ C.hCenter $ str ("     Press Q to go back to main page or press R to restrart.     ")
   ]
 
@@ -193,3 +195,6 @@ scoreAttr = attrName "score"
 
 quitAttr :: AttrName
 quitAttr = attrName "quit"
+
+comboAttr :: AttrName
+comboAttr = attrName "combo"

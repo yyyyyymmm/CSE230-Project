@@ -84,14 +84,8 @@ initGame = do
             , _blood = 80
             , _bonusTime = 0
             , _combo = 0
-<<<<<<< HEAD
-=======
             , _comboMax = 0
-<<<<<<< HEAD
->>>>>>> c2bba92c174ae468d8b02e5ca93125a728dc0bbf
-=======
             , _lineNumber = -1
->>>>>>> 526084f2d01957ce980a8cd59e35469d06b3bc7e
             }
       2 -> do
         notes <- getNotes ("./notes" </> "song.txt")
