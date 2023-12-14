@@ -116,9 +116,9 @@ drawUI g =
     [C.vCenter $ C.hCenter $ drawGameOver g] 
   else (
     [ C.vCenter $ hBox $ 
-      [vBox $ [ drawScore (_score g, 0, 0), padAll 1 (str " "), drawHit (_hit g) ]
+      [vBox $ [ drawScore (_score g, _combo g, _blood g), padAll 1 (str " "), drawHit (_hit g) ]
         , drawNotes g
-        , vBox $ [drawGuide, padTop (Pad 1) $ drawBonusTime 0]
+        , vBox $ [drawGuide, padTop (Pad 1) $ drawBonusTime (_bonusTime g)]
       ]
     ]
   )

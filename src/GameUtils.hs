@@ -81,6 +81,7 @@ initG = do
             , _score = 0
             , _blood = 80
             , _bonusTime = 0
+            , _combo = 0
             }
       2 -> do
         notes <- getNotes ("./notes" </> "song.txt")
@@ -91,6 +92,7 @@ initG = do
             , _score = 0
             , _blood = 80
             , _bonusTime = 0
+            , _combo = 0
             }
       3 -> do
         notes <- getNotes ("./notes" </> "song.txt")
@@ -101,6 +103,7 @@ initG = do
             , _score = 0
             , _blood = 80
             , _bonusTime = 0
+            , _combo = 0
             }
 
 update :: Game -> EventM () (Next Game)
