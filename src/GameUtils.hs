@@ -39,6 +39,7 @@ data Game = Game
   , _blood :: Int
   , _bonusTime :: Int
   , _combo :: Int
+  , _comboMax :: Int
   } 
 
 data Process = Hit | NoneHit
@@ -68,8 +69,8 @@ isEnd _ = False
 move :: [[Int]] -> [[Int]]
 move = map (filter (>0) . map (\x -> x - 1))
 
-initG :: IO Game
-initG = do
+initGame :: IO Game
+initGame = do
     musicIn <- readchooseMusic ("./assets" </> "MusicChoice.txt")
     case musicIn of 
       1 -> do
@@ -82,6 +83,10 @@ initG = do
             , _blood = 80
             , _bonusTime = 0
             , _combo = 0
+<<<<<<< HEAD
+=======
+            , _comboMax = 0
+>>>>>>> c2bba92c174ae468d8b02e5ca93125a728dc0bbf
             }
       2 -> do
         notes <- getNotes ("./notes" </> "song.txt")
@@ -93,6 +98,7 @@ initG = do
             , _blood = 80
             , _bonusTime = 0
             , _combo = 0
+            , _comboMax = 0
             }
       3 -> do
         notes <- getNotes ("./notes" </> "song.txt")
@@ -104,6 +110,7 @@ initG = do
             , _blood = 80
             , _bonusTime = 0
             , _combo = 0
+            , _comboMax = 0
             }
 
 update :: Game -> EventM () (Next Game)
@@ -111,6 +118,7 @@ update g =
   do
     let hit = if 1 `elem` concat (_notes g) then Miss else _hit g
     let newBlood = evaluateBlood (_blood g) NoneHit KeyS hit
+    let newCombo = evaluateCombo (_combo g) NoneHit hit
     let newG = Game
                 { _notes = move (_notes g)
                 , _end = isEnd (_notes g)
@@ -118,8 +126,11 @@ update g =
                 , _hit   = hit
                 , _blood = newBlood
                 , _bonusTime = evaluateBonusTime ( _bonusTime g) NoneHit KeyI Miss
+                , _combo = newCombo
+                , _comboMax = _comboMax g
                 } 
     continue newG
+
 
 getKeyIndex :: Key -> Int
 getKeyIndex k = case k of
@@ -155,6 +166,7 @@ hit k g =
                     , _blood = newBlood
                     , _bonusTime = evaluateBonusTime ( _bonusTime g) Hit KeyW s
                     , _combo = newCombo
+                    , _comboMax = max newCombo (_comboMax g)
                     }
 
 -- hitTool function
@@ -178,7 +190,10 @@ hitTool k g =
                     , _blood = newBlood
                     , _bonusTime = evaluateBonusTime (_bonusTime g) Hit KeyI s
                     , _combo = newCombo
+                    , _comboMax   = max newCombo (_comboMax g)
                     }
+
+-- Util Function
 
 evaluateBlood :: Int -> Process -> Key -> HitState -> Int
 evaluateBlood blood Hit key state
