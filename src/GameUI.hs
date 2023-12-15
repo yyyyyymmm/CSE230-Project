@@ -106,6 +106,8 @@ theMap = attrMap V.defAttr
   , (comboAttr, V.white `on` V.rgbColor 128 137 122)
   , (eyeAttr, V.withForeColor V.defAttr V.brightCyan)
   , (propAttr, V.red `on` V.red)
+  , (perfectAttr, fg V.red `V.withStyle` V.bold)
+  , (goodAttr, fg V.magenta)
   ]
 
 propAttr :: AttrName
@@ -128,6 +130,12 @@ hLineAttr = attrName "hLineAttr"
 
 bonusTimeAttr :: AttrName
 bonusTimeAttr = attrName "bonusTimeAttr"
+
+perfectAttr :: AttrName
+perfectAttr = attrName "perfect"
+
+goodAttr :: AttrName
+goodAttr = attrName "good"
 
 scoreAttr :: AttrName
 scoreAttr = attrName "score"
@@ -210,7 +218,10 @@ drawHit s = withBorderStyle BS.unicodeBold
   $ hLimit 15
   $ vLimit 15
   $ padAll 1
-  $ vBox $ [C.hCenter $ str $ show $ s]
+  $ vBox $ [C.hCenter $ case s of
+        Good     -> withAttr goodAttr $ str $ show s
+        Perfect  -> withAttr perfectAttr $ str $ show s
+        _          -> str $ show s]
 
 drawBonusTime :: Int -> Widget ()
 drawBonusTime t = withBorderStyle BS.unicodeBold
