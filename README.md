@@ -99,5 +99,12 @@ The implementation of choosing music is in [MusicUI.hs](https://github.com/yyyyy
 ### Game Playing
 
 The main part of the game UI is in [GameUI.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/GameUI.hs), underlying game logit is in [GameUtils.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/GameUtils.hs).
+![startmenu](./img/GameUI.png)
+
+## Reference
+[https://github.com/arcticmatt/dino-brick/tree/dino](https://github.com/arcticmatt/dino-brick/tree/dino)
+
+[https://github.com/samtay/tetris/tree/master](https://github.com/samtay/tetris/tree/master)
+
 
 
