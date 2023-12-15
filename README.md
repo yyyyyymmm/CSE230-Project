@@ -68,6 +68,23 @@ Next step, we need to :
 
 ## Game Logic Implementation
 
+```
+.
+|-- app
+|   `-- Main.hs
+|-- assets
+|   |-- MusicChoice.txt
+|   `-- bestResult.txt
+|-- src
+|   |-- GameUI.hs
+|   |-- GameUtils.hs
+|   |-- MusicUI.hs
+|   `-- StartUI.hs
+`-- test
+    |-- Spec.hs
+    `-- TestUtil.hs
+```
+
 ### Start Menu
 
 The implementation of start menu is in [StartUI.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/StartUI.hs).
