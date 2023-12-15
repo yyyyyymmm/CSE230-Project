@@ -201,6 +201,7 @@ drawGuide = withBorderStyle BS.unicodeBold
           , C.hCenter $ str $ "Hit Line 2   J", padTop (Pad 1) (str " ")
           , C.hCenter $ str $ "Hit Line 3   S", padTop (Pad 1) (str " ")
           , C.hCenter $ str $ "Hit Line 4   W", padTop (Pad 1) (str " ")
+          , C.hCenter $ str $ "Restart      R", padTop (Pad 1) (str " ")
           , C.hCenter $ str $ "Quit         Q"]
 
 
