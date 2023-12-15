@@ -196,9 +196,12 @@ drawGuide = withBorderStyle BS.unicodeBold
   $ hLimit 25
   $ vLimit 30
   $ padAll 1
-  $ vBox $ [C.hCenter $ str $ "Hit Upper Line   J", padTop (Pad 1) (str " ")
-          , C.hCenter $ str $ "Hit Lower Line   S", padTop (Pad 1) (str " ")
-          , C.hCenter $ str $ "Quit             Q"]
+  $ vBox $ [
+            C.hCenter $ str $ "Hit Line 1   I", padTop (Pad 1) (str " ")
+          , C.hCenter $ str $ "Hit Line 2   J", padTop (Pad 1) (str " ")
+          , C.hCenter $ str $ "Hit Line 3   S", padTop (Pad 1) (str " ")
+          , C.hCenter $ str $ "Hit Line 4   W", padTop (Pad 1) (str " ")
+          , C.hCenter $ str $ "Quit         Q"]
 
 
 drawScore :: (Int, Int, Int) -> Widget ()
