@@ -1,10 +1,6 @@
 # CSE230-Project
 
 ## Rhythm Dash: The Haskell Rhythm Game
-### Introduction
-Rhythm Dash is a rhythm game built with Haskell and the brick library. The reference game is MuseDash.
-
-![mushdash](./img/MushDash.png)
 
 ### Project Collaborators
 
@@ -14,6 +10,11 @@ Rhythm Dash is a rhythm game built with Haskell and the brick library. The refer
 | Luyao Ma         | luyaomacs              |
 | Ruoyang Li       | koichi-domoto          |
 | Kerong Xiang     | chloe020624@gmail.com  |
+
+### Introduction
+Rhythm Dash is a rhythm game built with Haskell and the brick library. The reference game is MuseDash.
+
+![mushdash](./img/MushDash.png)
 
 ### Gameplay
 As the background music plays, notes aligned with the rhythm will flow from the right towards the judgment points on the left. Players interact by pressing corresponding keys at the precise moment to get a high score. Additionally, Players must maintain their blood level, which depletes when missing hitting. The game incorporates special items, like the "Double" power-up, which doubles the score for a limited time (we call it "bonus time"). And the blood-level-restoring items, which replenish the player's blood level. Players need to keep their blood level from emptying, or else they will lose the game.
