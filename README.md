@@ -85,6 +85,9 @@ Next step, we need to :
     `-- TestUtil.hs
 ```
 
+![mushdash](./img/MushDash.png)
+
+
 ### Start Menu
 
 The implementation of start menu is in [StartUI.hs](https://github.com/yyyyyymmm/CSE230-Project/blob/main/src/StartUI.hs).
